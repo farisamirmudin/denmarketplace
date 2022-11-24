@@ -1,5 +1,4 @@
 import type { GetServerSideProps } from 'next'
-import Head from 'next/head'
 import { sanityClient, urlFor } from '../sanity'
 import { Collection } from '../typings'
 import Image from 'next/image'

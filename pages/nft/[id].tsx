@@ -8,7 +8,6 @@ import { BigNumber } from "ethers"
 import toast, { Toaster } from 'react-hot-toast'
 import { IoIosArrowBack } from 'react-icons/io'
 import Link from "next/link"
-import Head from "next/head"
 
 const DropPage = ({ collection }: { collection: Collection }) => {
 
@@ -83,8 +82,6 @@ const DropPage = ({ collection }: { collection: Collection }) => {
     <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 min-h-screen'>
       
       <Toaster position="bottom-right" />
-      
-
       {/* Left section */}
       <div className="lg:col-span-6 p-8 flex flex-col justify-between">
         {/* header */}
