@@ -6,6 +6,9 @@ import { Collection } from "../../typings"
 import { useEffect, useState } from "react"
 import { BigNumber } from "ethers"
 import toast, { Toaster } from 'react-hot-toast'
+import { IoIosArrowBack } from 'react-icons/io'
+import Link from "next/link"
+import Head from "next/head"
 
 const DropPage = ({ collection }: { collection: Collection }) => {
 
@@ -73,24 +76,16 @@ const DropPage = ({ collection }: { collection: Collection }) => {
       })
     }
     setIsLoading(false)
-    
+
   }
 
   return (
-    <div className='flex flex-col lg:grid lg:grid-cols-10 min-h-screen'>
-      <Toaster position="bottom-left" />
-      {/* Left Section */}
-      <div className="lg:col-span-4 flex flex-col justify-center items-center py-8 bg-gradient-to-br from-[#7D77FF] to-[#FF9482] lg:min-h-screen">
-        <div className="relative bg-gradient-to-br from-yellow-400 to-purple-600 p-2 rounded-xl">
-          <Image className='w-44 lg:w-72 lg:h-96' src="https://links.papareact.com/8sg" alt="" width={300} height={300} priority />
-        </div>
-        <div className="text-center p-2">
-          <p className='text-white text-4xl'>{collection.title}</p>
-          <p className='text-gray-200 italic'>{collection.description}</p>
-        </div>
-      </div>
+    <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 min-h-screen'>
+      
+      <Toaster position="bottom-right" />
+      
 
-      {/* Right section */}
+      {/* Left section */}
       <div className="lg:col-span-6 p-8 flex flex-col justify-between">
         {/* header */}
         <div className="">
@@ -110,6 +105,21 @@ const DropPage = ({ collection }: { collection: Collection }) => {
         {/* mint button */}
         <div>
           <button onClick={mintNFT} disabled={!claimedSupply || !address || claimedSupply.toNumber() === totalSupply} className='w-full bg-[#FF9482] rounded-full p-2 text-white disabled:cursor-not-allowed disabled:opacity-50'>{claimedSupply && !isLoading ? `Mint NFT (${currentPrice} ETH)` : 'Loading...'}</button>
+        </div>
+      </div>
+      {/* Right Section */}
+      <div className="relative lg:col-span-4 flex flex-col justify-center items-center py-8 bg-gradient-to-br from-[#7D77FF] to-[#FF9482] lg:min-h-screen">
+        <Link href={'/'}>
+          <div className="p-2 absolute top-5 left-5 hover:bg-gray-100 rounded-full">
+            <IoIosArrowBack />
+          </div>
+        </Link>
+        <div className="relative bg-gradient-to-br from-yellow-400 to-purple-600 p-2 rounded-xl">
+          <Image className='w-44 lg:w-72 lg:h-96' src="https://links.papareact.com/8sg" alt="" width={300} height={300} priority />
+        </div>
+        <div className="text-center p-2">
+          <p className='text-white text-4xl'>{collection.title}</p>
+          <p className='text-gray-200 italic'>{collection.description}</p>
         </div>
       </div>
     </div>

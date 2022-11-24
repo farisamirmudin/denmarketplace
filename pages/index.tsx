@@ -12,10 +12,6 @@ interface Props {
 const Home = ({ collections }: Props) => {
   return (
     <div className="min-h-screen  text-white flex flex-col">
-      <Head>
-        <title>NFT Drop</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <p className='text-4xl text-center py-8 bg-gray-200 text-black'>NFT Market Place</p>
       <main className='flex flex-col items-center justify-center bg-gradient-to-br from-[#7D77FF] to-[#FF9482] flex-1 gap-y-4'>
         <div>
