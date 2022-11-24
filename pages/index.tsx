@@ -19,7 +19,7 @@ const Home = ({ collections }: Props) => {
               <Link href={`/nft/${collection.slug.current}`} key={collection._id}>
                 <div className='transition-all duration-200 hover:scale-105 text-center'>
                   <div className="relative bg-gray-200 p-2 rounded-xl">
-                    <Image className='h-96 w-96 object-cover rounded-lg cursor-pointer' src={urlFor(collection.mainImage).url()} alt="" width={200} height={200} priority />
+                    <Image className='h-72 w-72 object-cover rounded-lg cursor-pointer' src={urlFor(collection.mainImage).url()} alt="" width={200} height={200} priority />
                   </div>
                   <p className='text-3xl mt-4'>{collection.title}</p>
                   <p className='text-sm italic text-gray-200'>{collection.description}</p>
