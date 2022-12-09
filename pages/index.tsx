@@ -1,3 +1,4 @@
+
 import type { GetServerSideProps } from 'next'
 import { sanityClient, urlFor } from '../sanity'
 import { Collection } from '../typings'
@@ -8,32 +9,26 @@ interface Props {
   collections: Collection[]
 }
 
-const Home = ({ collections }: Props) => {
+const Body = ({ collections }: Props) => {
+
   return (
-    <div className="min-h-screen  text-white flex flex-col">
-      <p className='text-4xl text-center py-8  text-black'>NFT Market Place</p>
-      <main className='flex flex-col items-center justify-center bg-gradient-to-br from-[#7D77FF] to-[#FF9482] flex-1 gap-y-4'>
-        <div>
-          {collections && collections.map(collection => {
-            return (
-              <Link href={`/nft/${collection.slug.current}`} key={collection._id}>
-                <div className='transition-all duration-200 hover:scale-105 text-center'>
-                  <div className="relative bg-white p-2 rounded-xl">
-                    <Image className='h-72 w-72 object-cover rounded-lg cursor-pointer' src={urlFor(collection.mainImage).url()} alt="" width={200} height={200} priority />
-                  </div>
-                  <p className='text-3xl mt-4'>{collection.title}</p>
-                  <p className='text-sm italic text-gray-200'>{collection.description}</p>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-      </main>
+    <div className='text-center mt-16'>
+      {/* greet */}
+      <div className="mb-8">
+        <p className="text-4xl mb-4">Welcome to DEN Market Place!</p>
+        <p className="text-2xl">Take a look at the available NFTs and mint away!</p>
+      </div>
+      {/* collections */}
+      <div className="inline-block relative">
+        <Link href={`/nft/${collections[0].slug.current}`}>
+          <Image className='rounded-lg cursor-pointer mb-2 w-84 h-84' src={urlFor(collections[0].mainImage).url()} alt="collection" width={400} height={400} priority />
+          <p className='text-4xl'>{collections[0].title}</p>
+        </Link>
+      </div>
     </div>
   )
 }
-
-export default Home
+export default Body
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const query = `*[_type == "collection"]{

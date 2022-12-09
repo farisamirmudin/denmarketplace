@@ -1,19 +1,14 @@
-import { useAddress, useContract, useDisconnect, useMetamask } from "@thirdweb-dev/react"
+import { useAddress, useContract } from "@thirdweb-dev/react"
 import Image from 'next/image'
 import { GetServerSideProps } from 'next'
-import { sanityClient, urlFor } from "../../sanity"
+import { sanityClient } from "../../sanity"
 import { Collection } from "../../typings"
 import { useEffect, useState } from "react"
 import { BigNumber } from "ethers"
 import toast, { Toaster } from 'react-hot-toast'
-import { IoIosArrowBack } from 'react-icons/io'
-import Link from "next/link"
 
 const DropPage = ({ collection }: { collection: Collection }) => {
 
-  // Connect to metamask
-  const connectWithMetamask = useMetamask()
-  const disconnect = useDisconnect()
   const address = useAddress()
 
   // Get total supply and claimed supply
@@ -43,35 +38,20 @@ const DropPage = ({ collection }: { collection: Collection }) => {
   const mintNFT = async () => {
     if (!contract || !address) return
     setIsLoading(true)
-    const notification = toast.loading('Minting...', {
-      style: {
-        color: 'white',
-        padding: '10px',
-        background: '#16a34a'
-      }
-    })
+    const notification = toast.loading('Minting...')
     try {
       const tx = await contract?.claimTo(address, 1)
       toast.dismiss(notification)
-      toast('You succesfully minted!', {
-        duration: 5000,
-        style: {
-          color: 'white',
-          padding: '10px',
-          background: '#16a34a'
-        }
+      toast.success('You succesfully minted!', {
+        duration: 5000
       })
       const receipt = tx[0].receipt
       const claimedTokenId = tx[0].id
       const claimedNFT = await tx[0].data()
     } catch (error) {
       toast.dismiss(notification)
-      toast('Something went wrong!', {
-        style: {
-          color: 'white',
-          padding: '10px',
-          background: '#dc2626'
-        }
+      toast.error('Something went wrong!', {
+        duration: 5000
       })
     }
     setIsLoading(false)
@@ -79,47 +59,27 @@ const DropPage = ({ collection }: { collection: Collection }) => {
   }
 
   return (
-    <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 min-h-screen'>
-      
+    <>
       <Toaster position="bottom-right" />
-      {/* Left section */}
-      <div className="lg:col-span-6 p-8 flex flex-col justify-between">
-        {/* header */}
-        <div className="">
-          <div className="flex items-center justify-between">
-            <p className='font-extralight text-xl'>NFT Marketplace</p>
-            <button onClick={() => address ? disconnect() : connectWithMetamask()} className='rounded-full bg-[#FF9482] text-white px-4 py-2 '>{address ? "Sign out" : "Sign in"}</button>
+      <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 items-center lg:mt-36 mt-20'>
+        {/* left section */}
+        <div className="lg:col-span-6 text-center">
+          {/* content */}
+          <div className="flex flex-col items-center mb-12">
+            <Image className='w-80 lg:h-40 object-cover rounded-lg' src="https://links.papareact.com/bdy" alt="" width={400} height={400} priority />
+            <p className='text-3xl lg:text-4xl my-2'>{collection.collectionName} Collection</p>
+            <p className='text-green-500 text-sm'>{!claimedSupply ? 'Fetching NFTs...' : `${claimedSupply}/${totalSupply} NFT's claimed`}</p>
           </div>
-          <hr className='mt-2 border' />
-          {address && <p className='text-green-400 text-sm text-center'>Connected wallet: {address}</p>}
+          {/* mint button */}
+          <button onClick={mintNFT} disabled={!claimedSupply || !address || claimedSupply.toNumber() === totalSupply || isLoading} className='w-full bg-gray-100 text-zinc-900 rounded-lg px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50 lg:mb-0 mb-8'>{!claimedSupply || isLoading ? 'Loading...' : `Mint NFT (${currentPrice} ETH)`}</button>
         </div>
-        {/* content */}
-        <div className="flex flex-col items-center py-6">
-          <Image className='w-80 lg:h-40 object-cover' src="https://links.papareact.com/bdy" alt="" width={400} height={400} priority />
-          <p className='text-3xl font-bold lg:text-4xl lg:font-extrabold mt-4 mb-2'>{collection.collectionName} | NFT Drop</p>
-          <p className='text-green-500 text-sm'>{!claimedSupply ? 'Fetching NFTs...' : `${claimedSupply}/${totalSupply} NFT's claimed`}</p>
-        </div>
-        {/* mint button */}
-        <div>
-          <button onClick={mintNFT} disabled={!claimedSupply || !address || claimedSupply.toNumber() === totalSupply} className='w-full bg-[#FF9482] rounded-full p-2 text-white disabled:cursor-not-allowed disabled:opacity-50'>{claimedSupply && !isLoading ? `Mint NFT (${currentPrice} ETH)` : 'Loading...'}</button>
+        {/* right section */}
+        <div className="lg:col-span-4 flex flex-col items-center">
+          <Image className='h-auto lg:w-72 w-48' src="https://links.papareact.com/8sg" alt="" width={300} height={300} priority />
+          <p className='text-4xl mt-2 mb-8 lg:mb-0'>{collection.title}</p>
         </div>
       </div>
-      {/* Right Section */}
-      <div className="relative lg:col-span-4 flex flex-col justify-center items-center py-8 bg-gradient-to-br from-[#7D77FF] to-[#FF9482] lg:min-h-screen">
-        <Link href={'/'}>
-          <div className="p-2 absolute top-5 left-5 hover:bg-gray-100 rounded-full">
-            <IoIosArrowBack />
-          </div>
-        </Link>
-        <div className="relative bg-gradient-to-br from-yellow-400 to-purple-600 p-2 rounded-xl">
-          <Image className='w-44 lg:w-72 lg:h-96' src="https://links.papareact.com/8sg" alt="" width={300} height={300} priority />
-        </div>
-        <div className="text-center p-2">
-          <p className='text-white text-4xl'>{collection.title}</p>
-          <p className='text-gray-200 italic'>{collection.description}</p>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
