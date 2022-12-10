@@ -1,7 +1,7 @@
 import { useAddress, useContract } from "@thirdweb-dev/react"
 import Image from 'next/image'
 import { GetServerSideProps } from 'next'
-import { sanityClient } from "../../sanity"
+import { sanityClient, urlFor } from "../../sanity"
 import { Collection } from "../../typings"
 import { useEffect, useState } from "react"
 import { BigNumber } from "ethers"
@@ -61,12 +61,12 @@ const DropPage = ({ collection }: { collection: Collection }) => {
   return (
     <>
       <Toaster position="bottom-right" />
-      <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 items-center lg:mt-36 mt-20'>
+      <div className='flex flex-col-reverse lg:grid lg:grid-cols-10 items-center my-16'>
         {/* left section */}
         <div className="lg:col-span-6 text-center">
           {/* content */}
           <div className="flex flex-col items-center mb-12">
-            <Image className='w-80 lg:h-40 object-cover rounded-lg' src="https://links.papareact.com/bdy" alt="" width={400} height={400} priority />
+            <Image className='w-80 lg:h-40 object-cover rounded-lg' src={urlFor(collection.mainImage).url()} alt="" width={400} height={400} priority />
             <p className='text-3xl lg:text-4xl my-2'>{collection.collectionName} Collection</p>
             <p className='text-green-500 text-sm'>{!claimedSupply ? 'Fetching NFTs...' : `${claimedSupply}/${totalSupply} NFT's claimed`}</p>
           </div>
@@ -75,8 +75,8 @@ const DropPage = ({ collection }: { collection: Collection }) => {
         </div>
         {/* right section */}
         <div className="lg:col-span-4 flex flex-col items-center">
-          <Image className='h-auto lg:w-72 w-48' src="https://links.papareact.com/8sg" alt="" width={300} height={300} priority />
-          <p className='text-4xl mt-2 mb-8 lg:mb-0'>{collection.title}</p>
+          <Image className='h-auto lg:w-72 w-48' src={urlFor(collection.previewImage).url()} alt="" width={300} height={300} priority />
+          <p className='text-4xl mt-2'>{collection.title}</p>
         </div>
       </div>
     </>
