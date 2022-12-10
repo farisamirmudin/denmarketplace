@@ -76,7 +76,7 @@ const DropPage = ({ collection }: { collection: Collection }) => {
         {/* right section */}
         <div className="lg:col-span-4 flex flex-col items-center">
           <Image className='h-auto lg:w-72 w-48' src={urlFor(collection.previewImage).url()} alt="" width={300} height={300} priority />
-          <p className='text-4xl mt-2'>{collection.title}</p>
+          <p className='lg:text-4xl text-3xl my-2'>{collection.title}</p>
         </div>
       </div>
     </>
